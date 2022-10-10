@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Cdek_HW1" id="Project-114e" database="Hive" >
+	<schema name="Cdek_HW1" >
+		<table name="hub_carrier" prior="hub_celler_1" >
+			<column name="h_carrier_sk" prior="h_celler_sk" type="INT" jt="4" mandatory="y" />
+			<column name="carrier_id" prior="celler_id" type="INT" jt="4" mandatory="y" />
+			<column name="source" type="STRING" jt="12" mandatory="y" />
+			<column name="load_datetime" type="TIMESTAMP" jt="93" mandatory="y" />
+			<index name="pk_hub_celler_1" unique="PRIMARY_KEY" >
+				<column name="h_carrier_sk" />
+			</index>
+		</table>
+		<table name="hub_customer" prior="hub_celler_0" >
+			<column name="h_customer_sk" prior="h_celler_sk" type="INT" jt="4" mandatory="y" />
+			<column name="customer_id" prior="celler_id" type="INT" jt="4" mandatory="y" />
+			<column name="source" type="STRING" jt="12" mandatory="y" />
+			<column name="load_datetime" type="TIMESTAMP" jt="93" mandatory="y" />
+			<index name="pk_hub_celler_0" unique="PRIMARY_KEY" >
+				<column name="h_customer_sk" />
+			</index>
+		</table>
+		<table name="hub_seller" prior="hub_celler" >
+			<column name="h_seller_sk" prior="h_celler_sk" type="INT" jt="4" mandatory="y" />
+			<column name="seller_id" prior="celler_id" type="INT" jt="4" mandatory="y" />
+			<column name="source" type="STRING" jt="12" mandatory="y" />
+			<column name="load_datetime" type="TIMESTAMP" jt="93" mandatory="y" />
+			<index name="pk_hub_celler" unique="PRIMARY_KEY" >
+				<column name="h_seller_sk" />
+			</index>
+		</table>
+		<table name="hub_timing" prior="hub_celler_2" >
+			<column name="h_timing_sk" prior="h_celler_sk" type="INT" jt="4" mandatory="y" />
+			<column name="timing_id" prior="celler_id" type="INT" jt="4" mandatory="y" />
+			<column name="source" type="STRING" jt="12" mandatory="y" />
+			<column name="load_datetime" type="TIMESTAMP" jt="93" mandatory="y" />
+			<index name="pk_hub_celler_2" unique="PRIMARY_KEY" >
+				<column name="h_timing_sk" />
+			</index>
+		</table>
+		<table name="hub_transportation" prior="hub_celler_3" >
+			<column name="h_transportation_sk" prior="h_celler_sk" type="INT" jt="4" mandatory="y" />
+			<column name="transportation_id" prior="celler_id" type="INT" jt="4" mandatory="y" />
+			<column name="source" type="STRING" jt="12" mandatory="y" />
+			<column name="load_datetime" type="TIMESTAMP" jt="93" mandatory="y" />
+			<index name="pk_hub_celler_3" unique="PRIMARY_KEY" >
+				<column name="h_transportation_sk" />
+			</index>
+		</table>
+		<table name="link_transportation" prior="link_" >
+			<column name="l_transportation_sk" type="INT" jt="4" mandatory="y" />
+			<column name="h_seller_sk" type="INT" jt="4" mandatory="y" />
+			<column name="h_transportation_sk" type="INT" jt="4" mandatory="y" />
+			<column name="h_timing_sk" type="INT" jt="4" mandatory="y" />
+			<column name="h_carrier_sk" type="INT" jt="4" mandatory="y" />
+			<column name="h_customer_sk" type="INT" jt="4" mandatory="y" />
+			<column name="source" prior=" source" type="STRING" jt="12" mandatory="y" />
+			<column name="load_datatime" type="TIMESTAMP" jt="93" mandatory="y" />
+			<index name="pk_link_transportation" unique="PRIMARY_KEY" >
+				<column name="l_transportation_sk" />
+			</index>
+			<fk name="fk_link_transportation_hub_seller" virtual="y" to_schema="Cdek_HW1" to_table="hub_seller" >
+				<fk_column name="h_seller_sk" pk="h_seller_sk" />
+			</fk>
+			<fk name="fk_link_transportation_hub_transportation" virtual="y" to_schema="Cdek_HW1" to_table="hub_transportation" >
+				<fk_column name="h_transportation_sk" pk="h_transportation_sk" />
+			</fk>
+			<fk name="fk_link_transportation_hub_timing" virtual="y" to_schema="Cdek_HW1" to_table="hub_timing" >
+				<fk_column name="h_timing_sk" pk="h_timing_sk" />
+			</fk>
+			<fk name="fk_link_transportation_hub_carrier" virtual="y" to_schema="Cdek_HW1" to_table="hub_carrier" >
+				<fk_column name="h_carrier_sk" pk="h_carrier_sk" />
+			</fk>
+			<fk name="fk_link_transportation_hub_customer" virtual="y" to_schema="Cdek_HW1" to_table="hub_customer" >
+				<fk_column name="h_customer_sk" pk="h_customer_sk" />
+			</fk>
+		</table>
+		<table name="sat_h_carrier" prior="sat_h_seller_2" >
+			<column name="h_carrier_sk" prior="h_seller_sk" type="INT" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" mandatory="y" />
+			<column name="email" type="STRING" jt="12" mandatory="y" />
+			<column name="phone" type="INT" jt="4" mandatory="y" />
+			<column name="transport" prior="location" type="STRING" jt="12" mandatory="y" />
+			<column name="rating" type="FLOAT" jt="6" />
+			<column name="source" type="STRING" jt="12" mandatory="y" />
+			<column name="load_datetime" type="TIMESTAMP" jt="93" mandatory="y" />
+			<fk name="fk_sat_h_carrier_hub_carrier" virtual="y" to_schema="Cdek_HW1" to_table="hub_carrier" >
+				<fk_column name="h_carrier_sk" pk="h_carrier_sk" />
+			</fk>
+		</table>
+		<table name="sat_h_customer" prior="sat_h_seller_3" >
+			<column name="h_customer_sk" prior="h_seller_sk" type="INT" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" mandatory="y" />
+			<column name="email" type="STRING" jt="12" mandatory="y" />
+			<column name="phone" type="INT" jt="4" mandatory="y" />
+			<column name="location" type="STRING" jt="12" mandatory="y" />
+			<column name="source" type="STRING" jt="12" mandatory="y" />
+			<column name="load_datetime" type="TIMESTAMP" jt="93" mandatory="y" />
+			<fk name="fk_sat_h_customer_hub_customer" virtual="y" to_schema="Cdek_HW1" to_table="hub_customer" >
+				<fk_column name="h_customer_sk" pk="h_customer_sk" />
+			</fk>
+		</table>
+		<table name="sat_h_seller" prior="sat_h_" >
+			<column name="h_seller_sk" type="INT" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" mandatory="y" />
+			<column name="email" type="STRING" jt="12" mandatory="y" />
+			<column name="phone" type="INT" jt="4" mandatory="y" />
+			<column name="location" type="STRING" jt="12" mandatory="y" />
+			<column name="source" type="STRING" jt="12" mandatory="y" />
+			<column name="load_datetime" type="TIMESTAMP" jt="93" mandatory="y" />
+			<fk name="fk_sat_h_seller_hub_seller" virtual="y" to_schema="Cdek_HW1" to_table="hub_seller" >
+				<fk_column name="h_seller_sk" pk="h_seller_sk" />
+			</fk>
+		</table>
+		<table name="sat_h_seller_0" >
+			<column name="h_seller_sk" type="INT" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" mandatory="y" />
+			<column name="email" type="STRING" jt="12" mandatory="y" />
+			<column name="phone" type="INT" jt="4" mandatory="y" />
+			<column name="location" type="STRING" jt="12" mandatory="y" />
+		</table>
+		<table name="sat_h_timing" prior="sat_h_seller_1" >
+			<column name="h_timing_sk" prior="h_seller_sk" type="INT" jt="4" mandatory="y" />
+			<column name="date_of_order_registration" prior="name" type="DATE" length="100" jt="91" mandatory="y" />
+			<column name="date_of_order_sending" prior="email" type="DATE" jt="91" mandatory="y" />
+			<column name="date_of_order_arrival" prior="phone" type="DATE" jt="91" mandatory="y" />
+			<column name="date_of_order_receipt" prior="receipt" type="DATE" jt="91" mandatory="y" />
+			<column name="source" type="STRING" jt="12" mandatory="y" />
+			<column name="load_datetime" type="TIMESTAMP" jt="93" />
+			<fk name="fk_sat_h_timing_hub_timing" virtual="y" to_schema="Cdek_HW1" to_table="hub_timing" >
+				<fk_column name="h_timing_sk" pk="h_timing_sk" />
+			</fk>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-edd" show_relation="columns" >
+		<entity schema="Cdek_HW1" name="hub_carrier" color="3986C1" x="400" y="480" />
+		<entity schema="Cdek_HW1" name="hub_customer" color="3986C1" x="400" y="624" />
+		<entity schema="Cdek_HW1" name="hub_seller" color="C1D8EE" x="400" y="48" />
+		<entity schema="Cdek_HW1" name="hub_timing" color="3986C1" x="400" y="336" />
+		<entity schema="Cdek_HW1" name="hub_transportation" color="3986C1" x="352" y="192" />
+		<entity schema="Cdek_HW1" name="link_transportation" color="C1EEC1" x="688" y="320" />
+		<entity schema="Cdek_HW1" name="sat_h_carrier" color="EEC1C8" x="144" y="400" />
+		<entity schema="Cdek_HW1" name="sat_h_customer" color="EEC1C8" x="144" y="592" />
+		<entity schema="Cdek_HW1" name="sat_h_seller" color="EEC1C8" x="144" y="48" />
+		<entity schema="Cdek_HW1" name="sat_h_timing" color="EEC1C8" x="48" y="224" />
+	</layout>
+</project>
