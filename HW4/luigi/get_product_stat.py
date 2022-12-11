@@ -124,7 +124,7 @@ def main(argv):
                 | (sf.abs(sf.round(sf.col("men_share"), 2) - maxMenShare) < eps)
                 | (sf.abs(sf.round(sf.col("women_share"), 2) - maxWomenShare) < eps)
                 )
-        .join(cityDF, okDemDF.city == cityDF.city, how = "inner")
+        .join(sf.broadcast(cityDF), okDemDF.city == cityDF.city, how = "inner")
         .select (
             cityDF.city,
             "city_id"
@@ -132,9 +132,9 @@ def main(argv):
     )
 
     cityPriceDF = (
-        selectedCitiesDF
-        .join(sf.broadcast(priceDF), selectedCitiesDF.city_id == priceDF.city_id, how = "inner")
-        .join(sf.broadcast(productDF), priceDF.product_id == productDF.product_id, how = "inner")
+        priceDF
+        .join(sf.broadcast(selectedCitiesDF), selectedCitiesDF.city_id == priceDF.city_id, how = "inner")
+        .join(productDF, priceDF.product_id == productDF.product_id, how = "inner")
         .select(sf.col("city").alias("city_name"),
                 selectedCitiesDF.city_id,
                 "product",
@@ -153,7 +153,7 @@ def main(argv):
 
     productStatDF = (
         cityPriceDF
-        .join(productPriceStatDF, cityPriceDF.city_id == productPriceStatDF.city_id)
+        .join(sf.broadcast(productPriceStatDF), cityPriceDF.city_id == productPriceStatDF.city_id)
         .withColumn("cheapest_product_name", 
                     sf.when(sf.col("price") == sf.col("cheapest_product_price"), sf.col("product"))
                     .otherwise(None)

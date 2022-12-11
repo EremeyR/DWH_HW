@@ -53,7 +53,7 @@ priceStatSchema = (
     .add("price_avg",FloatType())
 )
 
-sourceRsCitySchema = ( 
+rsCitySchema = ( 
     StructType()
     .add("ok_city_id",IntegerType())
     .add("rs_city_id",IntegerType()) 
@@ -128,7 +128,7 @@ def main(argv):
         spark.read
         .option("header", "false")
         .option("sep", "\t")
-        .schema(sourceRsCitySchema)
+        .schema(rsCitySchema)
         .csv(rs_city_path)
     ) 
 
@@ -154,8 +154,8 @@ def main(argv):
 
     okDemDF = (
         coreDemographyDF
-        .join(rsCityDF, coreDemographyDF.id_city == rsCityDF.ok_city_id, how = "inner")
-        .join(cityDF, rsCityDF.rs_city_id == cityDF.city_id)
+        .join(sf.broadcast(rsCityDF), coreDemographyDF.id_city == rsCityDF.ok_city_id, how = "inner")
+        .join(sf.broadcast(cityDF), rsCityDF.rs_city_id == cityDF.city_id)
         .select(
             sf.col("city"),
             (sf.months_between(sf.to_date(sf.lit(current_dt)), sf.from_unixtime("birth_date"))/12)
